@@ -1,0 +1,50 @@
+//- html 
+//-     head
+//-         title #{title}
+//-         script(type='text/javascript' src='/js/main.js', defer)
+
+//-     body 
+
+//-         h1 My Notes 👓
+//-         // Iterate over each note in the 'notes' array
+//-         each note,index in notes
+//-             // Display the content of each note
+//-             span #{note.content} 
+//-             button.dlt-btn(data-id=note.id) delete
+//-             br
+//-             br
+
+        
+//-         form(action="/create", method="post")
+
+//-             label(for="note") New Note:
+//-             input(type="text", name="note", required)
+//-             input(type="submit", value="Submit")
+
+<!DOCTYPE html>
+html(lang='en')
+
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title My Stylish Notes 👓
+    link(rel='stylesheet', href='/css/style.css')
+    script(type='text/javascript' src='/js/main.js', defer)
+
+
+  body
+    header
+      h1 My Notes 👓
+    
+    main
+      each note, index in notes
+        .note
+          span.content #{note.content}
+          button.dlt-btn(data-id=note.id) Delete
+        br
+
+      form(action='/create', method='post')
+        label(for='note') New Note:
+        input.note(type='text', name='note', required)
+        input.sbt-btn(type='submit', value='Submit')
+
