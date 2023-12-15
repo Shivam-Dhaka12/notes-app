@@ -12,7 +12,7 @@ app.get('/home', (req, res) => {
 const port = 3000;
 
 app.set('view engine', 'pug');
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 		if (err) console.log('Error reading file! ♠', err);
 		notes = eval(data);
 
-		res.render(path.join(__dirname, 'views', 'index'), {
+		res.render('index', {
 			title: 'Notes App',
 			notes,
 		});
