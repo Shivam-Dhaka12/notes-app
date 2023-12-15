@@ -12,17 +12,17 @@ app.get('/home', (req, res) => {
 const port = 3000;
 
 app.set('view engine', 'pug');
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
 	let notes;
 
-	fs.readFile('./data.js', 'utf-8', (err, data) => {
+	fs.readFile(path.join(__dirname, 'data.js'), 'utf-8', (err, data) => {
 		if (err) console.log('Error reading file! ♠', err);
 		notes = eval(data);
 
-		res.render('index', {
+		res.render(path.join(__dirname, 'views', 'index'), {
 			title: 'Notes App',
 			notes,
 		});
@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/create', (req, res) => {
-	fs.readFile('./data.js', 'utf-8', (err, data) => {
+	fs.readFile(path.join(__dirname, 'data.js'), 'utf-8', (err, data) => {
 		if (err) console.log('Error reading file! ♠', err);
 		notes = eval(data);
 		const last_note = notes[notes.length - 1];
@@ -40,7 +40,11 @@ app.post('/create', (req, res) => {
 			content: req.body.note,
 		});
 		const updated_notes = JSON.stringify(notes, null, 2);
-		fs.writeFileSync('./data.js', updated_notes, 'utf8');
+		fs.writeFileSync(
+			path.join(__dirname, 'data.js'),
+			updated_notes,
+			'utf8'
+		);
 		res.redirect('/');
 	});
 });
@@ -48,14 +52,18 @@ app.post('/create', (req, res) => {
 app.delete('/:id', (req, res) => {
 	const id = Number(req.params.id);
 
-	fs.readFile('./data.js', 'utf-8', (err, data) => {
+	fs.readFile(path.join(__dirname, 'data.js'), 'utf-8', (err, data) => {
 		if (err) console.log('Error reading file! ♠', err);
 		let notes = eval(data);
 
 		notes = notes.filter((note) => note.id !== id);
 		const updated_notes = JSON.stringify(notes, null, 2);
 
-		fs.writeFileSync('./data.js', updated_notes, 'utf8');
+		fs.writeFileSync(
+			path.join(__dirname, 'data.js'),
+			updated_notes,
+			'utf8'
+		);
 		res.status(200).json({
 			success: true,
 			message: 'Item deleted successfully.',
